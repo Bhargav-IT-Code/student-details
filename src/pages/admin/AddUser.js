@@ -62,6 +62,7 @@ const AddUser = () => {
       street: "",
       pincode: "",
     },
+    hlp: "",
   };
 
   const handleSubmit = async (values, { resetForm }) => {
@@ -375,42 +376,16 @@ const AddUser = () => {
                 </Field>
               </div>
               {/* subject groups */}
-              <div>
-                <label className="block text-gray-600">
-                  ICSE Group 1 list * (this subjects are compulsory)
-                </label>
-                <div>English</div>
-                <div>Social Science</div>
-                {classOfStudent < 9 && <div>Marathi</div>}
-                {/* <Field
-                  as="select"
-                  name="grp1"
-                  className="w-full p-2 border border-gray-300 rounded focus:border-blue-500 focus:outline-none"
-                >
-                  <option value="">Select Group</option>
-                  <option value="English">English</option>
-                  <option value="Social Science">Social Science</option>
-                  {classOfStudent < 9 && (
-                    <option value="Marathi">Marathi</option>
-                  )}
-                </Field> */}
-              </div>
               {classOfStudent >= 9 ? (
                 <>
-                  {/* <div>
+                  <div>
                     <label className="block text-gray-600">
-                      ICSE Group 2 list *
+                      ICSE Group 1 list * (this subjects are compulsory)
                     </label>
-                    <Field
-                      as="select"
-                      name="grp2"
-                      className="w-full p-2 border border-gray-300 rounded focus:border-blue-500 focus:outline-none"
-                    >
-                      <option value="">Select Group</option>
-                      <option value="Maths/Economics">Maths/Economics</option>
-                      <option value="Science/Ecology">Science/Ecology</option>
-                    </Field>
-                  </div> */}
+                    <div>English</div>
+                    <div>Social Science</div>
+                    {classOfStudent < 9 && <div>Marathi</div>}
+                  </div>
                   <div>
                     <label className="block text-gray-600">
                       ICSE Group 2 list (Mathematics/Economics) *
