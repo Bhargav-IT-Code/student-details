@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import QRCode from "qrcode";
 import { useNavigate } from "react-router-dom";
 import { insertStudent } from "../../utils/getDataFromGr";
@@ -7,6 +7,7 @@ import { insertStudent } from "../../utils/getDataFromGr";
 const AddUser = () => {
   const [qrCode, setQrCode] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [classOfStudent, setClassOfStudent] = useState(0);
   const navigate = useNavigate();
 
   const initialValues = {
@@ -40,6 +41,8 @@ const AddUser = () => {
       compLab: false,
       eLibrary: false,
     },
+    grp1: [],
+    grp2: "",
     grp3: "",
     HLPProgram: {
       dayOfParticipation: "Monday",
@@ -60,10 +63,12 @@ const AddUser = () => {
   };
 
   const handleSubmit = async (values, { resetForm }) => {
+    const AllValues = { ...values, class: String(classOfStudent), grp1 : classOfStudent < 9 ? ["English" , "Social Science" , "Marathi"] : ["English" , "Social Science"]  };
+    // console.log(AllValues,"all values")
     setErrorMessage(null);
     try {
       const qrCodeData = await QRCode.toDataURL(values.grNumber);
-      const userData = { ...values, qr: qrCodeData };
+      const userData = { AllValues, qr: qrCodeData };
 
       const response = await insertStudent(values.grNumber, userData);
       if (response && response.error) {
@@ -191,8 +196,15 @@ const AddUser = () => {
                   as="select"
                   name="class"
                   className="w-full p-2 border border-gray-300 rounded focus:border-blue-500 focus:outline-none"
+                  value={classOfStudent}
+                  onChange={(e) => {
+                    setClassOfStudent(Number(e.target.value));
+                  }}
                 >
                   <option value="">Select Class</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
                   {/* Add Class Options Here */}
                 </Field>
               </div>
@@ -347,40 +359,90 @@ const AddUser = () => {
                   <option value="Jain">Jain</option>
                 </Field>
               </div>
+              {/* subject groups */}
               <div>
                 <label className="block text-gray-600">
-                  ICSE Group 3 list *
+                  ICSE Group 1 list * (this subjects are compulsory)
                 </label>
-                <Field
+                <div>English</div>
+                <div>Social Science</div>
+                {classOfStudent < 9 && <div>Marathi</div>}
+                {/* <Field
                   as="select"
-                  name="grp3"
+                  name="grp1"
                   className="w-full p-2 border border-gray-300 rounded focus:border-blue-500 focus:outline-none"
                 >
                   <option value="">Select Group</option>
-                  <option value="Computer Applications">
-                    Computer Applications
-                  </option>
-                  <option value="Economic Applications">
-                    Economic Applications
-                  </option>
-                  <option value="Commercial Applications">
-                    Commercial Applications
-                  </option>
-                  <option value="Environmental Applications">
-                    Environmental Applications
-                  </option>
-                  <option value="Art">Art</option>
-                  <option value="Artificial inteligence and robotics">
-                    Artificial inteligence and robotics
-                  </option>
-                  <option value="Cookery">Cookery</option>
-                  <option value="Performing Arts (Dance, Drama, Music)">
-                    Performing Arts (Dance, Drama, Music)
-                  </option>
-                  <option value="Physical Education">Physical Education</option>
-                  <option value="Yoga">Yoga</option>
-                </Field>
+                  <option value="English">English</option>
+                  <option value="Social Science">Social Science</option>
+                  {classOfStudent < 9 && (
+                    <option value="Marathi">Marathi</option>
+                  )}
+                </Field> */}
               </div>
+              {classOfStudent >= 9 ? (
+                <>
+                  <div>
+                    <label className="block text-gray-600">
+                      ICSE Group 2 list *
+                    </label>
+                    <Field
+                      as="select"
+                      name="grp2"
+                      className="w-full p-2 border border-gray-300 rounded focus:border-blue-500 focus:outline-none"
+                    >
+                      <option value="">Select Group</option>
+                      <option value="Maths/Economics">Maths/Economics</option>
+                      <option value="Science/Ecology">Science/Ecology</option>
+                    </Field>
+                  </div>
+                  <div>
+                    <label className="block text-gray-600">
+                      ICSE Group 3 list *
+                    </label>
+                    <Field
+                      as="select"
+                      name="grp3"
+                      className="w-full p-2 border border-gray-300 rounded focus:border-blue-500 focus:outline-none"
+                    >
+                      <option value="">Select Group</option>
+                      <option value="Computer Applications">
+                        Computer Applications
+                      </option>
+                      <option value="Economic Applications">
+                        Economic Applications
+                      </option>
+                      <option value="Commercial Applications">
+                        Commercial Applications
+                      </option>
+                      <option value="Environmental Applications">
+                        Environmental Applications
+                      </option>
+                      <option value="Art">Art</option>
+                      <option value="Artificial inteligence and robotics">
+                        Artificial inteligence and robotics
+                      </option>
+                      <option value="Cookery">Cookery</option>
+                      <option value="Performing Arts (Dance, Drama, Music)">
+                        Performing Arts (Dance, Drama, Music)
+                      </option>
+                      <option value="Physical Education">
+                        Physical Education
+                      </option>
+                      <option value="Yoga">Yoga</option>
+                    </Field>
+                  </div>
+                </>
+              ) : (
+                <div>
+                  <label className="block text-gray-600">HLP</label>
+                  <Field
+                    type="text"
+                    name="misc.hlp"
+                    className="w-full p-2 border border-gray-300 rounded focus:border-blue-500 focus:outline-none"
+                  />
+                </div>
+              )}
             </div>
             <h3 className="text-xl font-semibold text-gray-700">
               Miscellaneous Information
