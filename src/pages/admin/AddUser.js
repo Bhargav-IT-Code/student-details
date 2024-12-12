@@ -42,7 +42,9 @@ const AddUser = () => {
       eLibrary: false,
     },
     grp1: [],
-    grp2: "",
+    // grp2: "",
+    grp2MathsEconomics: "",
+    grp2ScienceEcology: "",
     grp3: "",
     HLPProgram: {
       dayOfParticipation: "Monday",
@@ -63,7 +65,14 @@ const AddUser = () => {
   };
 
   const handleSubmit = async (values, { resetForm }) => {
-    const AllValues = { ...values, class: String(classOfStudent), grp1 : classOfStudent < 9 ? ["English" , "Social Science" , "Marathi"] : ["English" , "Social Science"]  };
+    const AllValues = {
+      ...values,
+      class: String(classOfStudent),
+      grp1:
+        classOfStudent < 9
+          ? ["English", "Social Science", "Marathi"]
+          : ["English", "Social Science"],
+    };
     // console.log(AllValues,"all values")
     setErrorMessage(null);
     try {
@@ -202,10 +211,16 @@ const AddUser = () => {
                   }}
                 >
                   <option value="">Select Class</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
                   <option value="8">8</option>
                   <option value="9">9</option>
                   <option value="10">10</option>
-                  {/* Add Class Options Here */}
                 </Field>
               </div>
               <div>
@@ -382,7 +397,7 @@ const AddUser = () => {
               </div>
               {classOfStudent >= 9 ? (
                 <>
-                  <div>
+                  {/* <div>
                     <label className="block text-gray-600">
                       ICSE Group 2 list *
                     </label>
@@ -394,6 +409,35 @@ const AddUser = () => {
                       <option value="">Select Group</option>
                       <option value="Maths/Economics">Maths/Economics</option>
                       <option value="Science/Ecology">Science/Ecology</option>
+                    </Field>
+                  </div> */}
+                  <div>
+                    <label className="block text-gray-600">
+                      ICSE Group 2 list (Mathematics/Economics) *
+                    </label>
+                    <Field
+                      as="select"
+                      name="grp2MathsEconomics"
+                      className="w-full p-2 border border-gray-300 rounded focus:border-blue-500 focus:outline-none"
+                    >
+                      <option value="">Select Group</option>
+                      <option value="Maths">Maths</option>
+                      <option value="Economics">Economics</option>
+                    </Field>
+                  </div>
+
+                  <div>
+                    <label className="block text-gray-600">
+                      ICSE Group 2 list (Science/Ecology) *
+                    </label>
+                    <Field
+                      as="select"
+                      name="grp2ScienceEcology"
+                      className="w-full p-2 border border-gray-300 rounded focus:border-blue-500 focus:outline-none"
+                    >
+                      <option value="">Select Group</option>
+                      <option value="Science">Science</option>
+                      <option value="Ecology">Ecology</option>
                     </Field>
                   </div>
                   <div>
